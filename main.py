@@ -23,12 +23,17 @@ async def command_start(message: types.Message):
 async def command_start(message: types.Message): 
     await bot.send_message("Выберите раздел", reply_markup=menu_keyboard)
 
-@dp.callback_query_handler(lambda c: c.data.startwith("section_"))
+@dp.callback_query_handler(lambda c: c.data == "section_1")
+async def show_section_1_menu(callback_query: types.CallbackQuery):
+    await bot.answer_callback_query(callback_query.id)
+    await bot.send_message(callback_query.from_user.id, f"Вы выбрали раздел {section}")
+
+@dp.callback_query_handler(lambda c: c.data in ("section_1_item"))
 async def process_menu_selection(callback_query: types.CallbackQuery):
     section = callback_query.data.split("_")[1]
     await bot.answer_callback_query(callback_query.id)
-    await bot.send_message(callback_query.from_user.id, "Вы выбрали раздел" (section)
- 
+    await bot.send_message(callback_query.from_user.id, f"Вы выбрали раздел {section}")
+
 @dp.message_handler() 
 async def bot_message(message: types.Message): 
     if message.text == "Рандомное число":
